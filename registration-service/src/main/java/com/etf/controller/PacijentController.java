@@ -2,6 +2,7 @@ package com.etf.controller;
 
 
 import com.etf.dao.PacijentDAO;
+import com.etf.exceptions.NotFoundException;
 import com.etf.model.Pacijent;
 import com.etf.repository.PacijentRepository;
 import jakarta.validation.ConstraintViolationException;
@@ -15,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,9 +54,18 @@ public class PacijentController {
     }
 
     @GetMapping(path = "/GetByIme/{ime}")
-    public @ResponseBody Pacijent getPacijentName(@PathVariable("ime") String ime){
+    public ResponseEntity<?> getPacijentName(@PathVariable("ime") String ime){
         //This returns a JSON or XML with the pacijents
-        return pacijentRepository.findByIme(ime);
+
+        try{
+            Pacijent pacijent = pacijentRepository.findByIme(ime);
+
+            if (pacijent == null) throw new NotFoundException("Pacijent pod tim imenom nije pronadjen.");
+
+            return ResponseEntity.ok(pacijent);
+        }catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(path = "/GetById/{id}")
