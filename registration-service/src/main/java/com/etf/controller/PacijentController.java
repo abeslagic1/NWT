@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Validated
 @RestController
@@ -48,6 +49,18 @@ public class PacijentController {
     public @ResponseBody Iterable<Pacijent> getAllPacijents(){
         //This returns a JSON or XML with the pacijents
         return pacijentRepository.findAll();
+    }
+
+    @GetMapping(path = "/GetByIme/{ime}")
+    public @ResponseBody Pacijent getPacijentName(@PathVariable("ime") String ime){
+        //This returns a JSON or XML with the pacijents
+        return pacijentRepository.findByIme(ime);
+    }
+
+    @GetMapping(path = "/GetById/{id}")
+    public Optional<Pacijent> getPacijentId(@PathVariable("id") Integer id){
+        //This returns a JSON or XML with the pacijents
+        return pacijentRepository.findById(id);
     }
 
     @PutMapping(path = "/{id}")

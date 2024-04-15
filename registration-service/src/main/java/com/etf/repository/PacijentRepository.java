@@ -12,9 +12,9 @@ public interface PacijentRepository extends CrudRepository<Pacijent, Integer> {
     public default void save(Pacijent pacijent, String id){
 
     }
-    Pacijent getById(int PacijenID);
+//    Pacijent getById(int PacijenID);
 
-    Optional<Pacijent> findById(Integer id);
+    //Optional<Pacijent> findById(Integer id);
 
     Pacijent findByIme(String ime);
 }

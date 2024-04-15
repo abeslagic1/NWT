@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Validated
 @RestController
@@ -43,6 +44,16 @@ public class SobaController {
     public @ResponseBody Iterable<Soba> getAllSobe(){
         // This returns a JSON or XML with the users
         return sobaRepository.findAll();
+    }
+
+    @GetMapping(path = "/GetByNazivSobe/{nazivSobe}")
+    public @ResponseBody Optional<Soba> getSobaByNazivSobe(@PathVariable("nazivSobe") String nazivSobe){
+        return sobaRepository.findByNazivSobe(nazivSobe);
+    }
+
+    @GetMapping(path = "/GetById/{id}")
+    public @ResponseBody Optional<Soba> getSobaById(@PathVariable("id") Integer id){
+        return sobaRepository.findById(id);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface KrevetRepository extends CrudRepository<Krevet, Integer> {
 
-    Krevet getById(int krevetID);
+    Optional<Krevet>findByNazivKreveta(String nazivKreveta);
 
-    Optional<Krevet>findById(Integer krevetID);
+    Optional<Krevet>findById(Integer id);
 }
