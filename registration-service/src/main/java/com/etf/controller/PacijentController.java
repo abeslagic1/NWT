@@ -2,9 +2,11 @@ package com.etf.controller;
 
 
 import com.etf.dao.PacijentDAO;
+import com.etf.exceptions.BadRequestException;
 import com.etf.exceptions.NotFoundException;
 import com.etf.model.Pacijent;
 import com.etf.repository.PacijentRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +83,109 @@ public class PacijentController {
         }
     }
 
-    @PutMapping(path = "/{id}")
-    ResponseEntity<String> updatePacijent(@RequestBody Pacijent pacijent, @PathVariable("id") String id){
+    @PatchMapping(path = "/Ime/{id}")
+    public @ResponseBody ResponseEntity<String> updatePacijentIme(@RequestBody String ime, @PathVariable("id") Integer id){
 
-        pacijentRepository.save(pacijent, id);
-        return ResponseEntity.ok("The patient has been successfully updated");
+        try{
+            Optional<Pacijent> pacijent = pacijentRepository.findById(id);
+
+            if(pacijent.isEmpty()) throw new NotFoundException("Pacijent sa tim id-em nije pronadjen.");
+            if(ime == null || ime.isEmpty() || ime.isBlank()) throw new NotFoundException("Ime ne smije biti prazan string.");
+
+            Pacijent pacijent1 = pacijent.get();
+
+            pacijent1.setIme(ime);
+
+            pacijentRepository.save(pacijent1);
+
+            return ResponseEntity.ok("The patient has been successfully updated");
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/Prezime/{id}")
+    public @ResponseBody ResponseEntity<String> updatePacijentPrezime(@RequestBody String prezime, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Pacijent> pacijent = pacijentRepository.findById(id);
+
+            if(pacijent.isEmpty()) throw new NotFoundException("Pacijent sa tim id-em nije pronadjen.");
+            if(prezime == null || prezime.isEmpty() || prezime.isBlank()) throw new NotFoundException("Prezime ne smije biti prazan string.");
+
+            Pacijent pacijent1 = pacijent.get();
+
+            pacijent1.setPrezime(prezime);
+
+            pacijentRepository.save(pacijent1);
+
+            return ResponseEntity.ok("The patient has been successfully updated");
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/samUSobi/{id}")
+    public @ResponseBody ResponseEntity<String> updatePacijentSamUSobi(@RequestBody String samUsobi, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Pacijent> pacijent = pacijentRepository.findById(id);
+
+            if(pacijent.isEmpty()) throw new NotFoundException("Pacijent sa tim id-em nije pronadjen.");
+            if(samUsobi == null || samUsobi.isEmpty() || samUsobi.isBlank()) throw new NotFoundException("Polje sam u sobi ne smije biti prazan string.");
+
+            Pacijent pacijent1 = pacijent.get();
+
+            if(samUsobi.equals("true") || samUsobi.equals("false")){
+                Boolean boo = Boolean.valueOf(samUsobi);
+
+                pacijent1.setSamUSobi(boo);
+                pacijentRepository.save(pacijent1);
+
+                return ResponseEntity.ok("The patient has been successfully updated");
+            }
+            return new ResponseEntity<>("Nije ispravna vrijednost boolean-a.", HttpStatus.BAD_REQUEST);
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(path = "/byId/{id}")
+    public @ResponseBody ResponseEntity<String> deletePacijentById(@PathVariable("id") Integer id){
+
+        try{
+            Optional<Pacijent> pacijent = pacijentRepository.findById(id);
+
+            if(pacijent.isEmpty()) throw new NotFoundException("Pacijent sa tim id-em nije pronadjen.");
+
+            pacijentRepository.deleteById(id);
+
+            return ResponseEntity.ok("The patient has been successfully deleted");
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //Delete by Ime nema rezona jer ime nije jedinstveno, tako da se ovo nece ni koristit.
+    @DeleteMapping(path = "/byIme/{ime}")
+    public @ResponseBody ResponseEntity<String> deletePacijentByIme(@PathVariable("ime") String ime) {
+
+        try {
+            Pacijent pacijent = pacijentRepository.findByIme(ime);
+
+            if (pacijent == null) throw new NotFoundException("Pacijent sa tim id-em nije pronadjen.");
+
+            Integer id = pacijent.getId();
+            pacijentRepository.deleteById(id);
+
+            return ResponseEntity.ok("The patient has been successfully deleted");
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

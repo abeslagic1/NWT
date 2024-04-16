@@ -36,25 +36,25 @@ public class PacijentService {
         return patients;
     }
 
-    public Pacijent getPatientById(int id) {
-        Pacijent p = pacijentRepository.findById(id).orElse(null);
+//    public Pacijent getPatientById(int id) {
+//        Pacijent p = pacijentRepository.findById(id);
+//
+//        if(p == null){
+//            throw new NotFoundException("Patient with id = " + id + "does not exist.");
+//        }
+//        return p;
+//    }
 
-        if(p == null){
-            throw new NotFoundException("Patient with id = " + id + "does not exist.");
-        }
-        return p;
-    }
-
-    public String deletePatient(int id){
-        Pacijent pacijent = pacijentRepository.findById(id).orElse(null);
-
-        if(pacijent == null){
-            throw new NotFoundException("Patient with id = " + id + " does not exist.");
-        }
-        recoveryListaPacijenata.add(pacijent);
-        pacijentRepository.deleteById(id);
-        return "Patient removed";
-    }
+//    public String deletePatient(int id){
+//        Pacijent pacijent = pacijentRepository.findById(id);
+//
+//        if(pacijent == null){
+//            throw new NotFoundException("Patient with id = " + id + " does not exist.");
+//        }
+//        recoveryListaPacijenata.add(pacijent);
+//        pacijentRepository.deleteById(id);
+//        return "Patient removed";
+//    }
 
     public Pacijent getPatientByName(String ime){
         Pacijent pacijenti = pacijentRepository.findByIme(ime);
