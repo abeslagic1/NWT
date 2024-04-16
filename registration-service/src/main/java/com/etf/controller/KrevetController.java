@@ -1,6 +1,7 @@
 package com.etf.controller;
 
 import com.etf.dao.KrevetDAO;
+import com.etf.exceptions.NotFoundException;
 import com.etf.model.Krevet;
 import com.etf.model.Pacijent;
 import com.etf.repository.KrevetRepository;
@@ -47,15 +48,32 @@ public class KrevetController {
     }
 
     @GetMapping(path = "/GetByNaziv/{nazivKreveta}")
-    public @ResponseBody Optional<Krevet> getKrevetByNaziv(@PathVariable("nazivKreveta") String nazivKreveta){
-        //This returns a JSON or XML with the pacijents
-        return krevetRepository.findByNazivKreveta(nazivKreveta);
+    public @ResponseBody ResponseEntity<?> getKrevetByNaziv(@PathVariable("nazivKreveta") String nazivKreveta){
+
+        try{
+            Optional<Krevet> krevet = krevetRepository.findByNazivKreveta(nazivKreveta);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim imenom nije pronadjen.");
+
+            return ResponseEntity.ok(krevet);
+        }catch (NotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(path = "/GetById/{id}")
-    public Optional<Krevet> getKrevetId(@PathVariable("id") Integer id){
-        //This returns a JSON or XML with the pacijents
-        return krevetRepository.findById(id);
+    public @ResponseBody ResponseEntity<?> getKrevetId(@PathVariable("id") Integer id){
+
+        try {
+            Optional<Krevet> krevet = krevetRepository.findById(id);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim id-em nije pronadjen");
+
+            return  ResponseEntity.ok(krevet);
+        }catch (NotFoundException e){
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -54,8 +54,7 @@ public class PacijentController {
     }
 
     @GetMapping(path = "/GetByIme/{ime}")
-    public ResponseEntity<?> getPacijentName(@PathVariable("ime") String ime){
-        //This returns a JSON or XML with the pacijents
+    public @ResponseBody ResponseEntity<?> getPacijentName(@PathVariable("ime") String ime){
 
         try{
             Pacijent pacijent = pacijentRepository.findByIme(ime);
@@ -69,9 +68,17 @@ public class PacijentController {
     }
 
     @GetMapping(path = "/GetById/{id}")
-    public Optional<Pacijent> getPacijentId(@PathVariable("id") Integer id){
-        //This returns a JSON or XML with the pacijents
-        return pacijentRepository.findById(id);
+    public @ResponseBody ResponseEntity<?> getPacijentId(@PathVariable("id") Integer id){
+
+        try{
+            Optional<Pacijent> pacijent = pacijentRepository.findById(id);
+
+            if(pacijent.isEmpty()) throw new NotFoundException("Pacijent pod tim id-em nije pronadjen.");
+
+            return ResponseEntity.ok(pacijent);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(path = "/{id}")

@@ -1,6 +1,7 @@
 package com.etf.controller;
 
 import com.etf.dao.SobaDAO;
+import com.etf.exceptions.NotFoundException;
 import com.etf.model.Soba;
 import com.etf.repository.SobaRepository;
 import jakarta.validation.Valid;
@@ -47,13 +48,32 @@ public class SobaController {
     }
 
     @GetMapping(path = "/GetByNazivSobe/{nazivSobe}")
-    public @ResponseBody Optional<Soba> getSobaByNazivSobe(@PathVariable("nazivSobe") String nazivSobe){
-        return sobaRepository.findByNazivSobe(nazivSobe);
+    public @ResponseBody ResponseEntity<?> getSobaByNazivSobe(@PathVariable("nazivSobe") String nazivSobe){
+
+        try{
+            Optional<Soba> soba = sobaRepository.findByNazivSobe(nazivSobe);
+
+            if(soba.isEmpty()) throw new NotFoundException("Soba sa tim nazivom nije pronadjena.");
+
+            return ResponseEntity.ok(soba);
+
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(path = "/GetById/{id}")
-    public @ResponseBody Optional<Soba> getSobaById(@PathVariable("id") Integer id){
-        return sobaRepository.findById(id);
+    public @ResponseBody ResponseEntity<?> getSobaById(@PathVariable("id") Integer id){
+
+        try{
+            Optional<Soba> soba = sobaRepository.findById(id);
+
+            if(soba.isEmpty()) throw new NotFoundException("Soba sa tim id-em nije pronadjena.");
+
+            return ResponseEntity.ok(soba);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
