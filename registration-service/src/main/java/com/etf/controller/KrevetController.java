@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+
 @Validated
 @RestController
 @RequestMapping(path = "/Krevet")
@@ -72,6 +73,93 @@ public class KrevetController {
             return  ResponseEntity.ok(krevet);
         }catch (NotFoundException e){
 
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/Naziv/{id}")
+    public @ResponseBody ResponseEntity<String> updateKrevetNaziv(@RequestBody String naziv, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Krevet> krevet = krevetRepository.findById(id);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim id-em nije pronadjen.");
+            if(naziv == null || naziv.isEmpty() || naziv.isBlank()) throw new NotFoundException("Naziv ne smije biti prazan string.");
+
+            Krevet krevet1 = krevet.get();
+
+            krevet1.setNazivKreveta(naziv);
+
+            krevetRepository.save(krevet1);
+
+            return ResponseEntity.ok("The bed has been successfully updated");
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/SobaID/{id}")
+    public @ResponseBody ResponseEntity<String> updateKrevetSobaId(@RequestBody String sobaId, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Krevet> krevet = krevetRepository.findById(id);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim id-em nije pronadjen.");
+            if(sobaId == null || sobaId.isEmpty() || sobaId.isBlank()) throw new NotFoundException("SobaId ne smije biti prazan string.");
+
+            Krevet krevet1 = krevet.get();
+
+            krevet1.setSobaId(Integer.valueOf(sobaId));
+
+            krevetRepository.save(krevet1);
+
+            return ResponseEntity.ok("The bed has been successfully updated");
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "/zauzetost/{id}")
+    public @ResponseBody ResponseEntity<String> updateKrevetZauzetost(@RequestBody String zauzetost, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Krevet> krevet = krevetRepository.findById(id);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim id-em nije pronadjen.");
+            if(zauzetost == null || zauzetost.isEmpty() || zauzetost.isBlank()) throw new NotFoundException("Polje zauzetost ne smije biti prazan string.");
+
+            Krevet krevet1 = krevet.get();
+
+            if(zauzetost.equals("true") || zauzetost.equals("false")){
+                Boolean zauzet = Boolean.valueOf(zauzetost);
+
+                krevet1.setZauzetost(zauzet);
+                krevetRepository.save(krevet1);
+
+                return ResponseEntity.ok("The bed has been successfully updated");
+            }
+            return new ResponseEntity<>("Nije ispravna vrijednost boolean-a.", HttpStatus.BAD_REQUEST);
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(path = "/byId/{id}")
+    public @ResponseBody ResponseEntity<String> deleteKrevetById(@PathVariable("id") Integer id){
+
+        try{
+            Optional<Krevet> krevet = krevetRepository.findById(id);
+
+            if(krevet.isEmpty()) throw new NotFoundException("Krevet sa tim id-em nije pronadjen.");
+
+            krevetRepository.deleteById(id);
+
+            return ResponseEntity.ok("The bed has been successfully deleted");
+        }
+        catch (NotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
