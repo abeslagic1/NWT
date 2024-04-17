@@ -1,6 +1,7 @@
 package com.etf.controller;
 
 import com.etf.dao.RezervacijaDAO;
+import com.etf.exceptions.NotFoundException;
 import com.etf.model.Rezervacija;
 import com.etf.repository.RezervacijaRepository;
 import jakarta.validation.Valid;
@@ -13,9 +14,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Validated
 @RestController
@@ -47,7 +48,133 @@ public class RezervacijaController {
         return rezervacijaRepository.findAll();
     }
 
+    @PatchMapping(path = "pacijentIdById/{id}")
+    public @ResponseBody ResponseEntity<?> updateRezervacijaPacijentId(@RequestBody String pacijentId, @PathVariable("id") Integer id){
 
+        try{
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            Rezervacija rez = rezervacija.get();
+
+            System.out.println(pacijentId);
+
+            rez.setPacijentId(Integer.valueOf(pacijentId));
+
+            rezervacijaRepository.save(rez);
+
+            return ResponseEntity.ok("Reservation has been successfully updated.");
+
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "sobaIdById/{id}")
+    public @ResponseBody ResponseEntity<?> updateRezervacijaSobaId(@RequestBody String sobaId, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            Rezervacija rez = rezervacija.get();
+
+            rez.setSobaId(Integer.valueOf(sobaId));
+
+            rezervacijaRepository.save(rez);
+
+            return ResponseEntity.ok("Reservation has been successfully updated.");
+
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "krevetIdById/{id}")
+    public @ResponseBody ResponseEntity<?> updateRezervacijaKrevetId(@RequestBody String krevetId, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            Rezervacija rez = rezervacija.get();
+
+            rez.setKrevetId(Integer.valueOf(krevetId));
+
+            rezervacijaRepository.save(rez);
+
+            return ResponseEntity.ok("Reservation has been successfully updated.");
+
+        }catch (NotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "DatumDolaskaById/{id}")
+    public @ResponseBody ResponseEntity<?> updateRezervacijaDatumDolaska(@RequestBody String datumDolaska, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            Rezervacija rez = rezervacija.get();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm",Locale.ENGLISH);
+
+            rez.setDatumDolaska(formatter.parse(datumDolaska));
+
+            rezervacijaRepository.save(rez);
+
+            return ResponseEntity.ok("Reservation has been successfully updated.");
+
+        }catch (NotFoundException | ParseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(path = "DatumOdlaskaById/{id}")
+    public @ResponseBody ResponseEntity<?> updateRezervacijaDatumOdlaska(@RequestBody String datumOdlaska, @PathVariable("id") Integer id){
+
+        try{
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            Rezervacija rez = rezervacija.get();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:mm",Locale.ENGLISH);
+
+            rez.setDatumOdlaska(formatter.parse(datumOdlaska));
+
+            rezervacijaRepository.save(rez);
+
+            return ResponseEntity.ok("Reservation has been successfully updated.");
+
+        }catch (NotFoundException | ParseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(path = "byId/{id}")
+    public @ResponseBody ResponseEntity<?> deleteReservation(@PathVariable("id") Integer id){
+
+        try {
+            Optional<Rezervacija> rezervacija = rezervacijaRepository.findById(id);
+
+            if(rezervacija.isEmpty()) throw new NotFoundException("Rezervacija sa tim id-em nije pronadjena.");
+
+            rezervacijaRepository.deleteById(id);
+
+            return ResponseEntity.ok("Reservation has been successfully deleted.");
+        }catch (NotFoundException e)
+        {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,5 +1,6 @@
 package com.etf.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -17,8 +18,10 @@ public class Rezervacija {
 
     private Integer krevetId;
 
+    @JsonFormat(pattern="dd.MM.yyyy HH:mm", timezone="Europe/Zagreb")
     private Date datumDolaska;
 
+    @JsonFormat(pattern="dd.MM.yyyy HH:mm", timezone="Europe/Zagreb")
     private Date datumOdlaska;
 
     public Rezervacija() {

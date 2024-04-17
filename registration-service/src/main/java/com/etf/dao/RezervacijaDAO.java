@@ -1,5 +1,6 @@
 package com.etf.dao;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -20,10 +21,12 @@ public class RezervacijaDAO {
     private Integer krevetId;
 
     @NotNull(message = "datumDolaska must be entered.")
+    @JsonFormat(pattern="dd.MM.yyyy HH:mm", timezone="Europe/Zagreb")
     @FutureOrPresent
     private Date datumDolaska;
 
     @NotNull(message = "datumOdlaska must be entered.")
+    @JsonFormat(pattern="dd.MM.yyyy HH:mm", timezone="Europe/Zagreb")
     @Future
     private Date datumOdlaska;
 

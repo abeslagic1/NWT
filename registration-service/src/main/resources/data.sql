@@ -14,8 +14,8 @@ INSERT INTO pacijent (ime, prezime, samUSobi) values ('Amar', 'Beslagic', true);
 INSERT INTO pacijent (ime, prezime, samUSobi) values ('Haris', 'Beslagic', false);
 INSERT INTO pacijent (ime, prezime, samUSobi) values ('Ferhat', 'Dobraca', false);
 
-INSERT INTO rezervacija (pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (1, 2, 1, '2023-01-01', '2023-01-09');
-INSERT INTO rezervacija (pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (2, 3, 2, '2023-02-10', '2023-02-28');
+INSERT INTO rezervacija (pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (1, 2, 1, '2024-05-15T10:30:00', '2024-05-22T00:00:00');
+INSERT INTO rezervacija (pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (2, 3, 2, '2024-05-01', '2024-05-05');
 -- INSERT INTO rezervacija (id, pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (1, 3, 2, 1, '12-01-2023', '18-01-2023');
 -- INSERT INTO rezervacija (id, pacijent_id, krevet_id, soba_id, datum_dolaska, datum_odlaska) values (1, 4, 2, 1, '12-01-2023', '18-01-2023');
 
