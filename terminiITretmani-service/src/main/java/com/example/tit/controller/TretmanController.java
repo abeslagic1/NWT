@@ -1,5 +1,6 @@
 package com.example.tit.controller;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import jakarta.validation.Valid;
 
 import com.example.tit.exception.TretmanNotFoundException;
 
+@Validated
 @RestController
 @RequestMapping(path = "/tretmani")
 public class TretmanController {

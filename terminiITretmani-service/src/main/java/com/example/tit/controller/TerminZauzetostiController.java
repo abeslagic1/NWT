@@ -1,5 +1,6 @@
 package com.example.tit.controller;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 //import java.sql.Date;
@@ -25,6 +26,7 @@ import jakarta.validation.Valid;
 
 import com.example.tit.exception.TerminZauzetostiNotFoundException;
 
+@Validated
 @RestController
 @RequestMapping(path = "/terminiZauzetosti")
 public class TerminZauzetostiController {

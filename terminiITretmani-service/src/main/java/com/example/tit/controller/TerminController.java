@@ -1,9 +1,11 @@
 package com.example.tit.controller;
 
+import org.springframework.validation.annotation.Validated;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tit.dao.TerminRepository;
 import com.example.tit.model.Termin;
+//import com.fasterxml.jackson.databind.JsonNode;
 import com.example.tit.exception.TerminNotFoundException;
 
+@Validated
 @RestController
 @RequestMapping(path = "/termini")
 public class TerminController {
@@ -55,6 +59,20 @@ public class TerminController {
     @DeleteMapping("/{id}")
     void deleteTermin(@PathVariable int id) {
         terminRepository.deleteById(id);
+    }
+
+
+    @PatchMapping("/{id}")
+    Termin updateTermin(@PathVariable int id, @RequestBody Termin updatedTermin) {
+        return terminRepository.findById(id).map(termin -> {
+            if (updatedTermin.getKomentar() != null) {
+                termin.setKomentar(updatedTermin.getKomentar());
+            }
+            if (updatedTermin.getStatus() != null) {
+                termin.setStatus(updatedTermin.getStatus());
+            }
+            return terminRepository.save(termin);
+        }).orElseThrow(() -> new TerminNotFoundException(id));
     }
 
 
