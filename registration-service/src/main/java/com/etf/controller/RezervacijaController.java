@@ -20,7 +20,7 @@ import java.util.*;
 
 @Validated
 @RestController
-@RequestMapping(path = "/Rezervacija")
+@RequestMapping(path = "/Rezervation/Rezervacija")
 public class RezervacijaController {
 
     @Autowired

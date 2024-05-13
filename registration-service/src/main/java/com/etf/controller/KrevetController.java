@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Validated
 @RestController
-@RequestMapping(path = "/Krevet")
+@RequestMapping(path = "/Rezervation/Krevet")
 public class KrevetController {
 
     @Autowired

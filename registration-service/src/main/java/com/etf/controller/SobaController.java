@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Validated
 @RestController
-@RequestMapping(path = "/Soba")
+@RequestMapping(path = "/Rezervation/Soba")
 public class SobaController {
 
     @Autowired
