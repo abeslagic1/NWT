@@ -22,7 +22,7 @@ import com.example.tit.exception.TretmanNotFoundException;
 
 @Validated
 @RestController
-@RequestMapping(path = "/tretmani")
+@RequestMapping(path = "/tit/tretmani")
 public class TretmanController {
 
     private final TretmanRepository tretmanRepository;

@@ -28,7 +28,7 @@ import com.example.tit.exception.TerminZauzetostiNotFoundException;
 
 @Validated
 @RestController
-@RequestMapping(path = "/terminiZauzetosti")
+@RequestMapping(path = "/tit/terminiZauzetosti")
 public class TerminZauzetostiController {
 
     private final TerminZauzetostiRepository terminZauzetostiRepository;

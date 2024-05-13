@@ -20,7 +20,7 @@ import com.example.tit.exception.TerminNotFoundException;
 
 @Validated
 @RestController
-@RequestMapping(path = "/termini")
+@RequestMapping(path = "/tit/termini")
 public class TerminController {
 
     private final TerminRepository terminRepository;

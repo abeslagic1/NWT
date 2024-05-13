@@ -27,7 +27,7 @@ import jakarta.validation.Valid;
 
 @Validated
 @RestController
-@RequestMapping(path="/doktori")
+@RequestMapping(path="/tit/doktori")
 public class DoctorController<JsonPatch> {
 
     

@@ -30,7 +30,7 @@ import com.example.tit.exception.PacijentNotFoundException;
 
 @Validated
 @RestController
-@RequestMapping(path = "/pacijenti")
+@RequestMapping(path = "/tit/pacijenti")
 public class PacijentController {
     
     @Autowired
