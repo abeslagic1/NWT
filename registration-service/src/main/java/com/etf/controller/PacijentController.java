@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @Validated
 @RestController
-@RequestMapping(path = "/Rezervation/Pacijent")
+@RequestMapping(path = "/Reservation/Pacijent")
 public class PacijentController {
 
     @Autowired          // This means to get the bean called userRepository
